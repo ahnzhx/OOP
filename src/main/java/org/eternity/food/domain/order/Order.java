@@ -1,13 +1,26 @@
 package org.eternity.food.domain.order;
 
-import lombok.Builder;
-import lombok.Getter;
-import org.eternity.food.domain.shop.Shop;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.eternity.food.domain.shop.Shop;
+
+import lombok.Builder;
+import lombok.Getter;
 
 @Entity
 @Table(name="ORDERS")
@@ -29,7 +42,7 @@ public class Order {
 
     @OneToMany(cascade= CascadeType.ALL)
     @JoinColumn(name="ORDER_ID")
-    private List<OrderLineItem> orderLineItems = new ArrayList<>();
+    private List<OrderLineItem> orderLineItems = new ArrayList<OrderLineItem>();
 
     @Column(name="ORDERED_TIME")
     private LocalDateTime orderedTime;
@@ -91,3 +104,4 @@ public class Order {
     private Money calculateTotalPrice(){
         return Money.sum(orderLineItems, OrderLineItem::calculatePrice);
     }*/
+}
