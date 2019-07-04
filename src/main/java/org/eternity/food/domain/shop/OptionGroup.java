@@ -3,14 +3,14 @@
  */
 package org.eternity.food.domain.shop;
 
-import org.eternity.food.domain.generic.money.Money;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
 
 /**
  * packageName	: org.eternity.food.domain.shop
- * fileName	: Option.java 
+ * fileName	: OptionGroup.java 
  * author		: twayair
  * date		: 2019. 7. 4.
  * 내용			: 
@@ -22,14 +22,13 @@ import lombok.Data;
  * 2019. 7. 4.			twayair			최초 생성
  */
 @Data
-public class Option {
+public class OptionGroup {
 	private String name;
-	private Money price;
+	private List<Option> options;
 	
 	@Builder
-	public Option(String name, Money price) {
+	public OptionGroup(String name, List<Option> options) {
 		this.name = name;
-		this.price = price;
+		this.options = options;
 	}
-
 }

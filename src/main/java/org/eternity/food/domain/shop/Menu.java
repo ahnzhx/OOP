@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.eternity.food.domain.generic.money.Money;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -81,7 +83,33 @@ public class Menu {
 		
 	}
 
-//TODO : 나머지 적어야댐	
+	public Money getBasePrice() {
+		return getBasicOptionGroupSpecs().getOptionSpecs().get(0).getPrice();
+	}
 	
+	private OptionGroupSpecification getBasicOptionGroupSpecs() {
+		return optionGroupSpecs
+				.stream()
+				.filter(spec -> spec.isBasic())
+				.findFirst()
+				.orElseThrow(IllegalStateException::new);
+	}
 	
+	private void validateOrder(String menuName, List<OptionGroup> optionGroups) {
+		if(!this.name.equals(menuName)) {
+			throw new IllegalArgumentException("기본 상품이 변경됐습니다.");
+		}
+		
+		if(!isSatisfiedBy(optionGroups)) {
+			throw new IllegalArgumentException("메뉴가 변경됐습니다.");
+		}
+	}
+	
+	private boolean isSatisfiedBy(List<OptionGroup> cartOptionGroups) {
+		return cartOptionGroups.stream().anyMatch(this::isSatisfiedBy);
+	}
+	
+	private boolean isSatisfiedBy(OptionGroup group) {
+		return optionGroupSpecs.stream().anyMatch(spec-> spec.isSatisfiedBy(group));
+	}
 }
