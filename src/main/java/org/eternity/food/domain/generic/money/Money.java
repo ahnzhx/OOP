@@ -1,7 +1,9 @@
 package org.eternity.food.domain.generic.money;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class Money {
     public static final Money ZERO = Money.wons(0);
@@ -14,6 +16,10 @@ public class Money {
 
     public static Money wons(double amount){
         return new Money(BigDecimal.valueOf(amount));
+    }
+
+    public static <T> Money sum(Collection<T> bags, Function<T, Money> monetary){
+        return bags.stream().map(bag -> monetary.apply(bag)).reduce(Money.ZERO, Money::plus);
     }
 
     Money(BigDecimal amount){

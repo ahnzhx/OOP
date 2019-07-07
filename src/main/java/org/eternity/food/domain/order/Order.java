@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.eternity.food.domain.generic.money.Money;
 import org.eternity.food.domain.shop.Shop;
 
 import lombok.Builder;
@@ -68,20 +69,20 @@ public class Order {
 
     }
 
-   /* public void place(){
+    public void place(){
         validate();
         ordered();
     }
 
-    private void validate() throws IllegalAccessException {
+    private void validate() {
         if(orderLineItems.isEmpty()){
-            throw new IllegalAccessException("주문 항목이 비어 있습니다.");
+            throw new IllegalStateException("주문 항목이 비어 있습니다.");
         }
         if(!shop.isOpen()){
-            throw new IllegalAccessException("가게가 영업중이 아닙니다.");
+            throw new IllegalArgumentException("가게가 영업중이 아닙니다.");
         }
         if(!shop.isValidOrderAmount(calculateTotalPrice())){
-            throw new IllegalAccessException(String.format("최소 주문 금액 %s 이상을 주문해주세요.", shop.getMinOrderAmount()));
+            throw new IllegalStateException(String.format("최소 주문 금액 %s 이상을 주문해주세요.", shop.getMinOrderAmount()));
         }
         for(OrderLineItem orderLineItem: orderLineItems){
             orderLineItem.validate();
@@ -92,7 +93,7 @@ public class Order {
         this.orderStatus= OrderStatus.ORDERED;
     }
 
-    private void payed(){
+    public void payed(){
         this.orderStatus = OrderStatus.PAYED;
     }
 
@@ -103,5 +104,5 @@ public class Order {
 
     private Money calculateTotalPrice(){
         return Money.sum(orderLineItems, OrderLineItem::calculatePrice);
-    }*/
+    }
 }

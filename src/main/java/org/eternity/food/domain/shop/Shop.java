@@ -1,7 +1,7 @@
 package org.eternity.food.domain.shop;
 
-import java.awt.Menu;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,7 +49,7 @@ public class Shop {
 	 */
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="SHOP_ID")
-	private java.util.List<Menu> menus = new ArrayList<Menu>();
+	private List<Menu> menus = new ArrayList<>();
 	
 	public Shop(String name, boolean open, Money minOrderAmount) {
 		this(name, open, minOrderAmount, Ratio.valueOf(0), Money.ZERO);
@@ -94,4 +94,6 @@ public class Shop {
 	public void billCommissionFee(Money price) {
 		commission = commission.plus(commissionRate.of(price));
 	}
+
+
 }

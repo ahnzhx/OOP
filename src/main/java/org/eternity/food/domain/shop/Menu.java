@@ -55,10 +55,10 @@ public class Menu {
 	@OneToOne
 	@JoinColumn(name="MENU_ID")
 	private Shop shop;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="MENU_ID")
-	private List<OptionGroupSpecification> optionGroupSpecs = new ArrayList<OptionGroupSpecification>();
+	private List<OptionGroupSpecification> optionGroupSpecs = new ArrayList<>();
 	
 	public Menu(Shop shop, String name, String description, OptionGroupSpecification basic, OptionGroupSpecification... groups) {
 		this(null, shop, name, description, basic, Arrays.asList(groups));
@@ -86,7 +86,7 @@ public class Menu {
 	public Money getBasePrice() {
 		return getBasicOptionGroupSpecs().getOptionSpecs().get(0).getPrice();
 	}
-	
+
 	private OptionGroupSpecification getBasicOptionGroupSpecs() {
 		return optionGroupSpecs
 				.stream()
@@ -95,7 +95,7 @@ public class Menu {
 				.orElseThrow(IllegalStateException::new);
 	}
 	
-	private void validateOrder(String menuName, List<OptionGroup> optionGroups) {
+	public void validateOrder(String menuName, List<OptionGroup> optionGroups) {
 		if(!this.name.equals(menuName)) {
 			throw new IllegalArgumentException("기본 상품이 변경됐습니다.");
 		}
