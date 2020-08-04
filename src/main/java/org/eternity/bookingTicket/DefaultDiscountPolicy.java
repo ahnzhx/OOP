@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class DefaultDiscountPolicy  implements DiscountPolicy{
+    // 추상화에서는 상태를 가질 수 있다. 인터페이스는 상태를 가질 수 없음.
     private List<DiscountCondition> conditions = new ArrayList<>();
 
     public DefaultDiscountPolicy(DiscountCondition... conditions) {
