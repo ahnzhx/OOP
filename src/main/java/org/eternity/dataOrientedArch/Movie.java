@@ -3,6 +3,8 @@ package org.eternity.dataOrientedArch;
 import org.eternity.bookingTicket.Money;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +39,38 @@ public class Movie {
         return movieType;
     }
 
+    public Money calculateAmountDiscountedFee() {
+        if(movieType != MovieType.AMOUNT_DISCOUNT)
+            throw new IllegalArgumentException();
+        return fee.minus(discountAmount);
+    }
+
+    public Money calculatePercentDiscountedFee() {
+        if(movieType != MovieType.PERCENT_DISCOUNT)
+            throw new IllegalArgumentException();
+        return fee.minus(fee.times(discountPercent));
+    }
+
+    public Money calculateNoneDiscountedFee() {
+        if(movieType != MovieType.NONE_DISCOUNT)
+            throw new IllegalArgumentException();
+        return fee;
+    }
+
+    public boolean isDiscountable(LocalDateTime whenScreened, int sequence){
+        for(DiscountCondition condition : discountConditions){
+            if(condition.getType() == DiscountConditionType.PERIOD){
+                if(condition.isDiscountable(whenScreened.getDayOfWeek(), whenScreened.toLocalTime()))
+                    return false;
+            }else{
+                if(condition.isDiscountable(sequence))
+                    return true;
+            }
+        }
+         return false;
+
+
+    }
     public void setMovieType(MovieType movieType) {
         this.movieType = movieType;
     }
