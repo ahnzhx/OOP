@@ -3,6 +3,7 @@ package org.eternity.chapter5;
 import org.eternity.bookingTicket.Reservation;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public class Screening {
     private Movie movie;
@@ -15,5 +16,12 @@ public class Screening {
 
     private Money calculateFee(int audienceCount){
         return movie.calculateMovieFee(this).times(audienceCount);
+    }
+
+    public LocalDateTime getWhenScreened() {
+        return whenScreened;
+    }
+    public int getSequence(){
+        return sequence;
     }
 }
