@@ -1,5 +1,6 @@
 package org.eternity.chapter5;
 
+import org.eternity.bookingTicket.Customer;
 import org.eternity.bookingTicket.Reservation;
 
 import java.time.LocalDateTime;

@@ -3,17 +3,21 @@ package org.eternity.chapter5;
 import org.eternity.bookingTicket.Money;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
-public class Movie {
+public abstract class Movie {
     private String title;
     private Duration runningTime;
     private Money fee;
     private List<DiscountCondition> discountConditions;
 
-    private MovieType movieType;
-    private Money discountAmount;
-    private double discountPercent;
+    public Movie(String title, Duration runningTime, Money fee, DiscountCondition... discountConditions) {
+        this.title = title;
+        this.runningTime = runningTime;
+        this.fee = fee;
+        this.discountConditions = Arrays.asList(discountConditions);
+    }
 
     public Money calculateMovieFee(Screening screening){
         if(isDiscountable(screening)){
@@ -22,29 +26,7 @@ public class Movie {
         return fee;
     }
 
-    private Money calculateDiscountAmount() {
-        switch (movieType){
-            case AMOUNT_DISCOUNT:
-                return calculateAmountDiscountAmount();
-            case PERCENT_DISCOUNT:
-                return calculatePercentDiscountAmount();
-            case NONE_DISCOUNT:
-                return calculateNoneDiscountAmount();
-        }
-        throw new IllegalStateException();
-    }
-
-    private Money calculateNoneDiscountAmount() {
-        return Money.ZERO;
-    }
-
-    private Money calculatePercentDiscountAmount() {
-        return fee.times(discountPercent);
-    }
-
-    private Money calculateAmountDiscountAmount() {
-        return discountAmount;
-    }
+    abstract protected Money calculateDiscountAmount();
 
     private boolean isDiscountable(Screening screening){
         return checkDiscountConditions(screening);
@@ -52,6 +34,10 @@ public class Movie {
 
     private boolean checkDiscountConditions(Screening screening) {
         return discountConditions.stream().anyMatch(condition -> condition.isSatisfiedBy(screening));
+    }
+
+    protected Money getFee(){
+        return fee;
     }
 
 }
